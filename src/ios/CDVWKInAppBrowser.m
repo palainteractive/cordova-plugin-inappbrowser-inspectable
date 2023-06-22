@@ -775,6 +775,16 @@ BOOL isExiting = FALSE;
 
     self.webView = [[WKWebView alloc] initWithFrame:webViewBounds configuration:configuration];
     
+    if (@available(iOS 16.4, *)) {
+        BOOL allowWebviewInspectionDefault = YES;
+        NSNumber *inspectableWebviewSetting = [_settings objectForKey:@"InspectableWebview"];
+        if (inspectableWebviewSetting != nil) {
+            self.webView.inspectable = [inspectableWebviewSetting boolValue];
+        } else {
+            self.webView.inspectable = allowWebviewInspectionDefault;
+        }
+    }
+    
     [self.view addSubview:self.webView];
     [self.view sendSubviewToBack:self.webView];
     
